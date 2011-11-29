@@ -76,3 +76,10 @@
 (require 'color-theme-blackboard)
 ;; (color-theme-blackboard)
 ;; Only looks decent when not in a terminal
+
+
+;; Magit cosmetics
+(eval-after-load 'magit
+  '(progn
+     (set-face-foreground 'magit-diff-add "green4")
+     (set-face-foreground 'magit-diff-del "red3")))
