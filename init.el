@@ -86,6 +86,5 @@
 
 ;; Find-File-In-Project Settings
 (require 'find-file-in-project)
-(setq ffip-project-file ".emacs-project")
 (setq ffip-limit 2048)
 (setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee") ffip-patterns))
