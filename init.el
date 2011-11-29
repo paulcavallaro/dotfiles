@@ -70,14 +70,6 @@
 ;; Show Paren Mode
 (show-paren-mode)
 
-;; Color Theme
-(require 'color-theme)
-(setq color-theme-initialized t)
-(require 'color-theme-blackboard)
-;; (color-theme-blackboard)
-;; Only looks decent when not in a terminal
-
-
 ;; Magit cosmetics
 (eval-after-load 'magit
   '(progn
