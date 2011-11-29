@@ -10,10 +10,10 @@
 (setq x-select-enable-clipboard t)
 
 ;; Scroll up with cursor
-(global-set-key (kbd "M-p") (lambda () (interactive) (previous-line) (scroll-down-line)))
+(global-set-key (kbd "M-P") (lambda () (interactive) (previous-line) (scroll-down-line)))
 
 ;; Scroll down with cursor
-(global-set-key (kbd "M-n") (lambda () (interactive) (next-line) (scroll-up-line)))
+(global-set-key (kbd "M-N") (lambda () (interactive) (next-line) (scroll-up-line)))
 
 ;; Goto line
 (global-set-key (kbd "M-g") 'goto-line)
