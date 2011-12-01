@@ -81,6 +81,7 @@
 (setq ffip-limit 2048)
 (setq ffip-project-file ".emacs-project")
 (setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee") ffip-patterns))
+(global-set-key (kbd "C-c C-f") 'ffip)
 
 
 (autoload 'paredit-mode "paredit"
