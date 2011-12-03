@@ -38,10 +38,6 @@
 (column-number-mode 1)
 (setq python-indent 4)
 
-;; Paredit Keybindings
-(global-set-key (kbd "M-)") 'paredit-forward-slurp-sexp)
-(global-set-key (kbd "M-(") 'paredit-backward-slurp-sexp)
-
 (setq js-indent-level 4)
 
 ;; Disable auto-save and backups
@@ -90,4 +86,8 @@
 (add-hook 'lisp-mode-hook             (lambda () (paredit-mode +1)))
 (add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
 (add-hook 'scheme-mode-hook           (lambda () (paredit-mode +1)))
-(add-hook 'clojure-mode-hook           (lambda () (paredit-mode +1)))
+(add-hook 'clojure-mode-hook          (lambda () (paredit-mode +1)))
+
+;; Paredit Mode Keybindings
+(define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp)
+(define-key paredit-mode-map (kbd "M-(") 'paredit-backward-slurp-sexp)
