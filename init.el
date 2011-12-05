@@ -79,7 +79,6 @@
 (setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee") ffip-patterns))
 (global-set-key (kbd "C-c C-f") 'ffip)
 
-
 (autoload 'paredit-mode "paredit"
   "Minor mode for pseudo-structurally editing Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook       (lambda () (paredit-mode +1)))
@@ -89,5 +88,6 @@
 (add-hook 'clojure-mode-hook          (lambda () (paredit-mode +1)))
 
 ;; Paredit Mode Keybindings
+(require 'paredit)
 (define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp)
 (define-key paredit-mode-map (kbd "M-(") 'paredit-backward-slurp-sexp)
