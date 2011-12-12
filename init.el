@@ -91,3 +91,8 @@
 (require 'paredit)
 (define-key paredit-mode-map (kbd "M-)") 'paredit-forward-slurp-sexp)
 (define-key paredit-mode-map (kbd "M-(") 'paredit-backward-slurp-sexp)
+
+;; New line configs
+;; Prevent Emacs from extending file when pressing down arrow at end of buffer.
+(setq next-line-add-newlines nil)
+(setq require-final-newline nil)
