@@ -45,9 +45,9 @@
 (setq auto-save-default nil)
 
 (add-hook 'html-mode-hook
-          (lambda ()
-            ;; Default indentation is usually 2 spaces, changing to 4.
-            (set (make-local-variable 'sgml-basic-offset) 8)))
+	  (lambda ()
+	    ;; Default indentation is usually 2 spaces, changing to 4.
+	    (set (make-local-variable 'sgml-basic-offset) 8)))
 
 ;; Adding geiser mode
 (load-file "~/lisp/geiser-0.1.4/elisp/geiser.el")
@@ -98,3 +98,26 @@
 ;; Prevent Emacs from extending file when pressing down arrow at end of buffer.
 (setq next-line-add-newlines nil)
 (setq require-final-newline nil)
+
+;; Hide welcome message
+(setq inhibit-startup-message t)
+
+;; Pylint and Flymake
+(require 'flymake)
+
+(when (load "flymake" t)
+  (defun flymake-pylint-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+		       'flymake-create-temp-inplace))
+	   (local-file (file-relative-name
+			temp-file
+			(file-name-directory buffer-file-name))))
+      (list "epylint" (list local-file))))
+
+  (add-to-list 'flymake-allowed-file-name-masks
+	       '("\\.py\\'" flymake-pylint-init)))
+
+;; (add-hook 'python-mode-hook (lambda () (flymake-mode t)))
+
+;; Flymake-Cursor
+(require 'flymake-cursor)
