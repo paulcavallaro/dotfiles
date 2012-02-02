@@ -47,7 +47,7 @@
 (add-hook 'html-mode-hook
 	  (lambda ()
 	    ;; Default indentation is usually 2 spaces, changing to 4.
-	    (set (make-local-variable 'sgml-basic-offset) 8)))
+	    (set (make-local-variable 'sgml-basic-offset) 4)))
 
 ;; Adding geiser mode
 (load-file "~/lisp/geiser-0.1.4/elisp/geiser.el")
@@ -117,7 +117,19 @@
   (add-to-list 'flymake-allowed-file-name-masks
 	       '("\\.py\\'" flymake-pylint-init)))
 
-;; (add-hook 'python-mode-hook (lambda () (flymake-mode t)))
+(add-hook 'python-mode-hook (lambda () (flymake-mode t)))
 
 ;; Flymake-Cursor
 (require 'flymake-cursor)
+
+;; Mac OS X
+(setq mac-command-modifier 'meta)
+(setq mac-option-modifier 'super)
+
+;; Color themes
+;; (require 'color-theme-solarized)
+;; (require 'color-theme-blackboard)
+
+;; Browse Kill Ring
+(require 'browse-kill-ring)
+(browse-kill-ring-default-keybindings)
