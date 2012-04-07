@@ -10,10 +10,10 @@
 (setq x-select-enable-clipboard t)
 
 ;; Scroll up with cursor
-(global-set-key (kbd "M-P") (lambda () (interactive) (previous-line) (scroll-down-line)))
+(global-set-key (kbd "M-P") (lambda (arg) (interactive "p") (previous-line arg) (scroll-down-line arg)))
 
 ;; Scroll down with cursor
-(global-set-key (kbd "M-N") (lambda () (interactive) (next-line) (scroll-up-line)))
+(global-set-key (kbd "M-N") (lambda (arg) (interactive "p") (next-line arg) (scroll-up-line arg)))
 
 ;; Goto line
 (global-set-key (kbd "M-g") 'goto-line)
@@ -46,8 +46,7 @@
 
 (add-hook 'html-mode-hook
 	  (lambda ()
-	    ;; Default indentation is usually 2 spaces, changing to 4.
-	    (set (make-local-variable 'sgml-basic-offset) 4)))
+	    (set (make-local-variable 'sgml-basic-offset) 2)))
 
 ;; Adding geiser mode
 (load-file "~/lisp/geiser-0.1.4/elisp/geiser.el")
