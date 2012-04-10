@@ -9,6 +9,9 @@
 ;; Hide tool bar
 (tool-bar-mode 0)
 
+;; Hide scroll bar
+(set-scroll-bar-mode nil)
+
 ;; OS level copy / paste
 (setq x-select-enable-clipboard t)
 
