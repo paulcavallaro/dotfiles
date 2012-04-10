@@ -6,6 +6,9 @@
 ;; Hide menu bar
 (menu-bar-mode 0)
 
+;; Hide tool bar
+(tool-bar-mode 0)
+
 ;; OS level copy / paste
 (setq x-select-enable-clipboard t)
 
