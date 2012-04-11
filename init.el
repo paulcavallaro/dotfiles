@@ -30,6 +30,9 @@
 ;; Clean whitespace
 (global-set-key (kbd "C-x M-w") (lambda () (interactive) (whitespace-cleanup)))
 
+;; C indentation level to 4
+(setq-default c-basic-offset 4)
+
 (defun save-to-clipboard (start end)
   "Save region to clipboard through pbcopy"
   (interactive "r")
@@ -50,6 +53,7 @@
 (setq backup-inhibited t)
 (setq auto-save-default nil)
 
+;; Html mode hooks
 (add-hook 'html-mode-hook
 	  (lambda ()
 	    (set (make-local-variable 'sgml-basic-offset) 2)))
@@ -138,3 +142,8 @@
 ;; Browse Kill Ring
 (require 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
+
+;; Org-Mode
+(require 'org)
+(define-key org-mode-map (kbd "M-p") 'org-metaup)
+(define-key org-mode-map (kbd "M-n") 'org-metadown)
