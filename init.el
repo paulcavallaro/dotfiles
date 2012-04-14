@@ -103,6 +103,10 @@
 (define-key paredit-mode-map (kbd "M-{") 'paredit-backward-slurp-sexp)
 (define-key paredit-mode-map (kbd "M-}") 'paredit-backward-barf-sexp)
 
+;; Ace Jump Mode
+(require 'ace-jump-mode)
+(define-key global-map (kbd "C-x j") 'ace-jump-mode)
+
 ;; New line configs
 ;; Prevent Emacs from extending file when pressing down arrow at end of buffer.
 (setq next-line-add-newlines nil)
