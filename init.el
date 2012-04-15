@@ -134,10 +134,6 @@
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier 'super)
 
-;; Color themes
-;; (require 'color-theme-solarized)
-;; (require 'color-theme-blackboard)
-
 ;; Browse Kill Ring
 (require 'browse-kill-ring)
 (browse-kill-ring-default-keybindings)
@@ -157,3 +153,13 @@
 (setq require-final-newline nil)
 (add-hook 'nxml-mode-hook (lambda () (setq require-final-newline nil)))
 (add-hook 'java-mode-hook (lambda () (setq require-final-newline nil)))
+
+;; Turn off fringe mode because it doesn't work nicely in OS X
+(set-fringe-mode 0)
+
+;; Settings for just Mac OS X Emacs with window
+(when window-system
+  (require 'color-theme-solarized)
+  (color-theme-solarized-dark)
+  (setq default-frame-alist '((width . 273)
+			      (height . 76))))
