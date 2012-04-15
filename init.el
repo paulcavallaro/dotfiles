@@ -107,11 +107,6 @@
 (require 'ace-jump-mode)
 (define-key global-map (kbd "C-x j") 'ace-jump-mode)
 
-;; New line configs
-;; Prevent Emacs from extending file when pressing down arrow at end of buffer.
-(setq next-line-add-newlines nil)
-(setq require-final-newline nil)
-
 ;; Hide welcome message
 (setq inhibit-startup-message t)
 
@@ -151,3 +146,14 @@
 (require 'org)
 (define-key org-mode-map (kbd "M-p") 'org-metaup)
 (define-key org-mode-map (kbd "M-n") 'org-metadown)
+
+;; Haskell-Mode
+(add-hook 'haskell-mode-hook (lambda () (haskell-indentation-mode t)))
+
+;; Don't add newlines with next-line
+(setq next-line-add-newlines nil)
+
+;; make edited files end with a carriage return
+(setq require-final-newline nil)
+(add-hook 'nxml-mode-hook (lambda () (setq require-final-newline nil)))
+(add-hook 'java-mode-hook (lambda () (setq require-final-newline nil)))
