@@ -150,7 +150,6 @@
 (setq next-line-add-newlines nil)
 
 ;; make edited files end with a carriage return
-(setq require-final-newline nil)
 (add-hook 'nxml-mode-hook (lambda () (setq require-final-newline nil)))
 (add-hook 'java-mode-hook (lambda () (setq require-final-newline nil)))
 
