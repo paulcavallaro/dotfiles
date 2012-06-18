@@ -160,5 +160,14 @@
 (when window-system
   (require 'color-theme-solarized)
   (color-theme-solarized-dark)
-  (setq default-frame-alist '((width . 273)
-			      (height . 76))))
+  (setq default-frame-alist '((width . 190)
+			      (height . 60)))
+  (custom-set-faces
+   '(flymake-errline ((t (:background "#9E0000"))))
+   '(org-todo ((t (:background "#BD1111"))))))
+
+;; Ghetto way to get the path properly set
+(setenv "PATH" (shell-command-to-string "source ~/.zshrc && echo $PATH"))
+
+;; hl-line-mode for line highlighting
+(global-hl-line-mode 1)
