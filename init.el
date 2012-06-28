@@ -9,9 +9,6 @@
 ;; Hide tool bar
 (tool-bar-mode 0)
 
-;; Hide scroll bar
-(set-scroll-bar-mode nil)
-
 ;; OS level copy / paste
 (setq x-select-enable-clipboard t)
 
@@ -154,7 +151,14 @@
 (add-hook 'java-mode-hook (lambda () (setq require-final-newline nil)))
 
 ;; Turn off fringe mode because it doesn't work nicely in OS X
-(set-fringe-mode 0)
+;; and also hide scroll bar
+(defun osx-frame-fixes (&optional frame)
+  (set-fringe-mode 0)
+  (set-scroll-bar-mode nil))
+
+(osx-frame-fixes)
+
+(add-hook 'after-make-frame-functions 'osx-frame-fixes)
 
 ;; Settings for just Mac OS X Emacs with window
 (when window-system
