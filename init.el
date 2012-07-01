@@ -146,10 +146,6 @@
 ;; Don't add newlines with next-line
 (setq next-line-add-newlines nil)
 
-;; make edited files end with a carriage return
-(add-hook 'nxml-mode-hook (lambda () (setq require-final-newline nil)))
-(add-hook 'java-mode-hook (lambda () (setq require-final-newline nil)))
-
 ;; Turn off fringe mode because it doesn't work nicely in OS X
 ;; and also hide scroll bar
 (defun osx-frame-fixes (&optional frame)
