@@ -27,8 +27,8 @@
 ;; Clean whitespace
 (global-set-key (kbd "C-x M-w") (lambda () (interactive) (whitespace-cleanup)))
 
-;; C indentation level to 4
-(setq-default c-basic-offset 4)
+;; C indentation level to 8
+(setq-default c-basic-offset 8)
 
 (defun save-to-clipboard (start end)
   "Save region to clipboard through pbcopy"
@@ -171,3 +171,6 @@
 
 ;; hl-line-mode for line highlighting
 (global-hl-line-mode 1)
+
+;; Add puppet mode to .pp files
+(add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))
