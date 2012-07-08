@@ -174,3 +174,13 @@
 
 ;; Add puppet mode to .pp files
 (add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))
+
+
+;; C functions
+(defun include ()
+  (interactive)
+  (insert "#include <")
+  (insert ".h>")
+  (backward-char 3))
+
+(global-set-key (kbd "M-I") 'include)
