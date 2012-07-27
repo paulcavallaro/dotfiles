@@ -163,7 +163,7 @@
   (setq default-frame-alist '((width . 190)
 			      (height . 60)))
   (custom-set-faces
-   '(default ((t (:inherit nil :stipple nil :background "#042028" :foreground "#708183" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 135 :width extra-expanded :foundry "apple" :family "Inconsolata"))))
+   '(default ((t (:inherit nil :stipple nil :background "#042028" :foreground "#708183" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight bold :height 135 :width extra-expanded :foundry "apple" :family "Inconsolata"))))
    '(flymake-errline ((t (:background "#9E0000"))))
    '(org-todo ((t (:background "#BD1111")))))
   (custom-set-faces
