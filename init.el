@@ -175,6 +175,8 @@
 ;; Add puppet mode to .pp files
 (add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))
 
+;; Add markdown mode to .md files
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;; C functions
 (defun include ()
