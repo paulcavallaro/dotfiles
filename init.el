@@ -82,7 +82,7 @@
 (require 'find-file-in-project)
 (setq ffip-limit 2048)
 (setq ffip-project-file ".git")
-(setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee") ffip-patterns))
+(setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee" "*.hs" "*.lhs" "*.ocaml" "*.rkt" "*.scm") ffip-patterns))
 (global-set-key (kbd "C-c C-f") 'ffip)
 
 (autoload 'paredit-mode "paredit"
@@ -130,6 +130,7 @@
 ;; Mac OS X
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier 'super)
+(global-set-key (kbd "M-`") 'other-frame)
 
 ;; Browse Kill Ring
 (require 'browse-kill-ring)
@@ -182,11 +183,16 @@
 ;; Add markdown mode to .md files
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-;; C functions
-(defun include ()
-  (interactive)
-  (insert "#include <")
-  (insert ".h>")
-  (backward-char 3))
+;; Setup haskell-mode
+(defun haskell-mode-hooks ()
+  (turn-on-haskell-doc-mode)
+  (turn-on-haskell-indentation)
+  ;;(turn-on-haskell-indent)
+  ;;(turn-on-haskell-simple-indent)
+  )
 
-(global-set-key (kbd "M-I") 'include)
+(add-hook 'haskell-mode-hook 'haskell-mode-hooks)
+
+(add-to-list 'load-path "~/.emacs.d/unmanaged")
+
+(require 'parselt)
