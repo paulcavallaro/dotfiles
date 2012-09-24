@@ -56,7 +56,10 @@
 	    (set (make-local-variable 'sgml-basic-offset) 2)))
 
 ;; Adding geiser mode
-(load-file "~/lisp/geiser-0.1.4/elisp/geiser.el")
+(load-file "~/lisp/geiser-0.2.1/elisp/geiser.el")
+;; Adding quack mode after geiser
+;; (load-file "~/lisp/quack-0.45/quack.el")
+;; (require 'quack)
 
 ;; ido-mode everywhere
 (setq ido-enable-flex-matching t)
@@ -82,7 +85,7 @@
 (require 'find-file-in-project)
 (setq ffip-limit 2048)
 (setq ffip-project-file ".git")
-(setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee" "*.hs" "*.lhs" "*.ocaml" "*.rkt" "*.scm") ffip-patterns))
+(setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee" "*.hs" "*.lhs" "*.ocaml" "*.rkt" "*.scm" "*.proto" "*.java") ffip-patterns))
 (global-set-key (kbd "C-c C-f") 'ffip)
 
 (autoload 'paredit-mode "paredit"
@@ -144,9 +147,6 @@
 ;; Haskell-Mode
 (add-hook 'haskell-mode-hook (lambda () (haskell-indentation-mode t)))
 
-;; Don't add newlines with next-line
-(setq next-line-add-newlines nil)
-
 ;; Turn off fringe mode because it doesn't work nicely in OS X
 ;; and also hide scroll bar
 (defun osx-frame-fixes (&optional frame)
@@ -196,3 +196,12 @@
 (add-to-list 'load-path "~/.emacs.d/unmanaged")
 
 (require 'parselt)
+
+(require 'racket)
+
+(require 'multiple-cursors)
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
