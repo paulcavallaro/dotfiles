@@ -85,7 +85,7 @@
 (require 'find-file-in-project)
 (setq ffip-limit 2048)
 (setq ffip-project-file ".git")
-(setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee" "*.hs" "*.lhs" "*.ocaml" "*.rkt" "*.scm" "*.proto" "*.java") ffip-patterns))
+(setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee" "*.hs" "*.lhs" "*.hsc" "*.ocaml" "*.rkt" "*.scm" "*.proto" "*.java" "*.c" "*.h") ffip-patterns))
 (global-set-key (kbd "C-c C-f") 'ffip)
 
 (autoload 'paredit-mode "paredit"
