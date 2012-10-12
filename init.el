@@ -1,6 +1,6 @@
 (require 'package)
 (add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
+             '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (package-initialize)
 
 ;; Hide menu bar
@@ -24,8 +24,12 @@
 ;; Go back a buffer
 (global-set-key (kbd "C-x p") (lambda () (interactive) (other-window -1)))
 
+(setq indent-tabs-mode 'nil)
+(setq whitespace-style '(face tabs spaces trailing lines space-before-tab::space newline indentation::space empty space-after-tab::space space-before-tab::space space-mark tab-mark newline-mark))
+
 ;; Clean whitespace
-(global-set-key (kbd "C-x M-w") (lambda () (interactive) (whitespace-cleanup)))
+(global-set-key (kbd "C-x M-w") (lambda () (interactive)
+                                  (whitespace-cleanup)))
 
 ;; C indentation level to 8
 (setq-default c-basic-offset 8)
@@ -52,8 +56,8 @@
 
 ;; Html mode hooks
 (add-hook 'html-mode-hook
-	  (lambda ()
-	    (set (make-local-variable 'sgml-basic-offset) 2)))
+          (lambda ()
+            (set (make-local-variable 'sgml-basic-offset) 2)))
 
 ;; Adding geiser mode
 (load-file "~/lisp/geiser-0.2.1/elisp/geiser.el")
@@ -113,17 +117,18 @@
 ;; Pylint and Flymake
 (require 'flymake)
 
+(exec-path-from-shell-initialize)
 (when (load "flymake" t)
   (defun flymake-pylint-init ()
     (let* ((temp-file (flymake-init-create-temp-buffer-copy
-		       'flymake-create-temp-inplace))
-	   (local-file (file-relative-name
-			temp-file
-			(file-name-directory buffer-file-name))))
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
       (list "epylint" (list local-file))))
 
   (add-to-list 'flymake-allowed-file-name-masks
-	       '("\\.py\\'" flymake-pylint-init)))
+               '("\\.py\\'" flymake-pylint-init)))
 
 (add-hook 'python-mode-hook (lambda () (flymake-mode t)))
 
@@ -162,7 +167,7 @@
   (require 'color-theme-solarized)
   (color-theme-solarized-dark)
   (setq default-frame-alist '((width . 190)
-			      (height . 60)))
+                              (height . 60)))
   (custom-set-faces
    '(default ((t (:inherit nil :stipple nil :background "#042028" :foreground "#708183" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight bold :height 135 :width extra-expanded :foundry "apple" :family "Inconsolata"))))
    '(flymake-errline ((t (:background "#9E0000"))))
