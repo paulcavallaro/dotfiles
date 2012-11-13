@@ -31,6 +31,11 @@
 (global-set-key (kbd "C-x M-w") (lambda () (interactive)
                                   (whitespace-cleanup)))
 
+;; Scala 2 Mode
+;; https://github.com/hvesalai/scala-mode2
+(add-to-list 'load-path "~/.emacs.d/scala-mode2/")
+(require 'scala-mode)
+
 ;; C indentation level to 8
 (setq-default c-basic-offset 8)
 
@@ -198,9 +203,8 @@
 
 (add-hook 'haskell-mode-hook 'haskell-mode-hooks)
 
+;; Add unmanaged load path
 (add-to-list 'load-path "~/.emacs.d/unmanaged")
-
-(require 'parselt)
 
 (require 'racket)
 
