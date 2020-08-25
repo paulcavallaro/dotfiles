@@ -1,0 +1,11 @@
+[ui]
+	color = auto
+[color]
+	ui = auto
+[user]
+	name = Paul Cavallaro
+	email = paulcavallaro@gmail.com
+[push]
+	default = simple
+[pull]
+	rebase = true
