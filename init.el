@@ -3,22 +3,11 @@
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 
 ;; Add unmanaged load path
 (add-to-list 'load-path "~/.emacs.d/unmanaged")
-(add-to-list 'load-path "~/.emacs.d/unmanaged/thrift.el")
 (add-to-list 'load-path "~/.emacs.d/unmanaged/highlight-80+.el")
-
-;; Change default font to Space Mono
-(set-frame-font "Space Mono-12")
-;; Old default
-;; (set-frame-font "Menlo-12")
-(make-face 'fancy-comment-face)
-(set-face-foreground 'fancy-comment-face "#586e75")
-(set-face-font 'fancy-comment-face "Space Mono-12:italic")
 
 ;; Tramp handle 2fac auth
 (setq
@@ -75,11 +64,16 @@
  '(foreground-color "#5c5cff")
  '(package-selected-packages
    (quote
-    (buffer-move multiple-cursors yaml-mode tuareg solarized-theme smex racer pylint pretty-lambdada php-mode paredit nlinum markdown-mode magit lua-mode jinja2-mode ido-ubiquitous go-mode ghci-completion ghc geiser flymake-go flymake-cursor flymake flycheck-rust find-file-in-project fic-ext-mode d-mode cm-mode clang-format browse-kill-ring ack ace-jump-mode))))
+    (ess yaml-mode bazel-mode protobuf-mode multiple-cursors xterm-color tuareg solarized-theme smex rust-mode pretty-lambdada php-mode paredit org nlinum nasm-mode markdown-mode magit lua-mode ido-ubiquitous iasm-mode ghci-completion ghc geiser flymake find-file-in-project fic-ext-mode d-mode color-theme-solarized cm-mode browse-kill-ring ack ace-window ace-jump-mode))))
+
+;; protobuf-mode
+(require 'protobuf-mode)
 
 ;; super awesome project git grep from emacs
 (require 'ack)
 (global-set-key (kbd "M-F") 'ack)
+
+(global-set-key (kbd "C-M-q") 'clang-format-region)
 
 ;; Revert all buffers visiting a file function
 (defun revert-all-buffers ()
@@ -97,6 +91,10 @@
 ;; Make things kind of more intuitive
 (global-set-key (kbd "C-x |") (lambda () (interactive) (split-window-right)))
 (global-set-key (kbd "C-x _") (lambda () (interactive) (split-window-below)))
+
+;; ace-window
+(require 'ace-window)
+(global-set-key (kbd "M-o") 'ace-window)
 
 ;; Hide menu bar
 (menu-bar-mode 0)
@@ -117,16 +115,16 @@
 (global-set-key (kbd "C-x C-u") 'undo)
 
 ;; Scroll up with cursor
-(global-set-key (kbd "M-P") (lambda (arg) (interactive "p") (previous-line arg) (scroll-down-line arg)))
+(global-set-key (kbd "M-p") (lambda (arg) (interactive "p") (previous-line arg) (scroll-down-line arg)))
 
 ;; Scroll up w/o cursor
-(global-set-key (kbd "M-p") 'scroll-down-line)
+(global-set-key (kbd "M-P") 'scroll-down-line)
 
 ;; Scroll down with cursor
-(global-set-key (kbd "M-N") (lambda (arg) (interactive "p") (next-line arg) (scroll-up-line arg)))
+(global-set-key (kbd "M-n") (lambda (arg) (interactive "p") (next-line arg) (scroll-up-line arg)))
 
 ;; Scroll down w/o cursor
-(global-set-key (kbd "M-n") 'scroll-up-line)
+(global-set-key (kbd "M-N") 'scroll-up-line)
 
 ;; Goto line
 (global-set-key (kbd "M-g") 'goto-line)
@@ -140,9 +138,6 @@
 ;; Paredit overrides C-j binding, add new binding
 (global-set-key (kbd "C-S-j") 'eval-print-last-sexp)
 
-;; Remap M-% to isearch-query-replace
-(global-set-key (kbd "M-%") 'isearch-query-replace-regexp)
-
 ;; No tabs for you!
 (setq-default indent-tabs-mode nil)
 
@@ -155,8 +150,20 @@
 ;; (add-to-list 'load-path "~/.emacs.d/scala-mode2/")
 ;; (require 'scala-mode)
 
-;; C indentation level to 4
-(setq-default c-basic-offset 4)
+;; C indentation level to 2
+(setq-default c-basic-offset 2)
+
+;; Allow inserting of today's date
+(require 'calendar)
+(defun insdate-insert-current-date (&optional omit-day-of-week-p)
+  "Insert today's date using the current locale.
+  With a prefix argument, the date is inserted without the day of
+  the week."
+  (interactive "P*")
+  (insert (calendar-date-string (calendar-current-date) nil
+                                omit-day-of-week-p)))
+(global-set-key "\C-x\M-d" `insdate-insert-current-date)
+
 
 (require 'cc-mode)
 
@@ -170,15 +177,6 @@
                     (c-offsets-alist
                      (arglist-close . 0)
                      (arglist-intro . +))))
-
-(defun basic-c-mode-hook ()
-  "Basic C/C++ mode hook"
-  (c-set-style "fb")
-  (setq indent-tabs-mode nil)
-)
-
-(add-hook 'c-mode-hook (function (lambda () (basic-c-mode-hook))))
-(add-hook 'c++-mode-hook (function (lambda () (basic-c-mode-hook))))
 
 (add-hook 'php-mode-hook
           (function (lambda ()
@@ -198,7 +196,7 @@
 (setq nlinum-format "%d ")
 (global-nlinum-mode 1)
 (column-number-mode 1)
-(setq python-indent 4)
+(setq python-indent 2)
 (setq rust-indent-unit 4)
 
 (setq js-indent-level 2)
@@ -259,8 +257,6 @@ your recently and most frequently used commands.")
 (define-key paredit-mode-map (kbd "M-{") 'paredit-backward-slurp-sexp)
 (define-key paredit-mode-map (kbd "M-}") 'paredit-backward-barf-sexp)
 
-(autoload 'paredit-mode "paredit"
-  "Minor mode for pseudo-structurally editing Lisp code." t)
 (add-hook 'emacs-lisp-mode-hook       (lambda () (paredit-mode +1)))
 (add-hook 'lisp-mode-hook             (lambda () (paredit-mode +1)))
 (add-hook 'lisp-interaction-mode-hook (lambda () (paredit-mode +1)))
@@ -278,9 +274,7 @@ your recently and most frequently used commands.")
 ;; Pylint and Flymake
 (require 'flymake)
 
-;; Add /usr/local/bin (homebrew) to exec-path
-(add-to-list 'exec-path "/usr/local/bin")
-
+;;(exec-path-from-shell-initialize)
 (when (load "flymake" t)
   (defun flymake-pylint-init ()
     (let* ((temp-file (flymake-init-create-temp-buffer-copy
@@ -293,15 +287,10 @@ your recently and most frequently used commands.")
   (add-to-list 'flymake-allowed-file-name-masks
                '("\\.py\\'" flymake-pylint-init)))
 
+;; (add-hook 'python-mode-hook (lambda () (flymake-mode t)))
+
 ;; Flymake-Cursor
-(require 'flymake-cursor)
-(add-hook 'python-mode-hook
-          (lambda ()
-            (flymake-mode t)
-            (flymake-cursor-mode)
-            (define-key python-mode-map (kbd "M-RET") 'flymake-cursor-show-errors-at-point-now)
-            (define-key python-mode-map (kbd "M-E") 'flymake-display-err-menu-for-current-line)
-            ))
+;; (require 'flymake-cursor)
 
 ;; Mac OS X
 (setq mac-command-modifier 'meta)
@@ -316,27 +305,16 @@ your recently and most frequently used commands.")
 (require 'org)
 (define-key org-mode-map (kbd "M-p") 'org-metaup)
 (define-key org-mode-map (kbd "M-n") 'org-metadown)
-(add-hook 'org-mode-hook
-          (lambda ()
-            (setq org-log-done 'time)
-            (setq org-todo-keywords
-                  '((sequence "TODO" "IN PROGRESS" "|" "DONE" "WONTFIX")))))
+
+;; 80 character default fill width
+(setq-default fill-column 80)
 
 ;; Prog-Mode hooks
 (require 'highlight-80+)
 (add-hook 'prog-mode-hook
           (lambda ()
             (fic-ext-mode t)
-            (highlight-80+-mode)
-            ;; Oscar 120 line length limit
-            (setq highlight-80+-columns 120)
-            (set (make-local-variable 'font-lock-comment-face)
-                 'fancy-comment-face)
-            ))
-
-
-;; Set default fill-column to 80 to make fill-paragraph nice
-(setq-default fill-column 80)
+            (highlight-80+-mode)))
 
 ;; Turn off fringe mode because it doesn't work nicely in OS X
 ;; and also hide scroll bar
@@ -350,8 +328,8 @@ your recently and most frequently used commands.")
 
 ;; Settings for just Mac OS X Emacs with window
 (when window-system
-  (require 'solarized-theme)
-  (load-theme 'solarized-dark 't)
+  (require 'solarized)
+  (load-theme 'solarized-dark t)
   ;; hl-line-mode for line highlighting
   (global-hl-line-mode 1))
 
@@ -368,15 +346,20 @@ your recently and most frequently used commands.")
 ;; Add puppet mode to .pp files
 (add-to-list 'auto-mode-alist '("\\.pp\\'" . puppet-mode))
 
-;; Add pythong mode to BUCK files
-(add-to-list 'auto-mode-alist '("BUCK\\'" . python-mode))
+;; Add proto mode to .proto files
+(add-to-list 'auto-mode-alist '("\\.proto\\'" . protobuf-mode))
+
+;; Add bazel mode to BUILD files
+(add-to-list 'auto-mode-alist '("BUILD\\'" . bazel-mode))
+
+;; Add bazel mode to BUILD files
+(add-to-list 'auto-mode-alist '("\\.bazel\\'" . bazel-mode))
+
+;; Add bazel mode to WORKSPACE files
+(add-to-list 'auto-mode-alist '("WORKSPACE\\'" . bazel-mode))
 
 ;; Add python mode to .tw files
 (add-to-list 'auto-mode-alist '("\\.tw\\'" . python-mode))
-;; Add python mode to .aurora files
-(add-to-list 'auto-mode-alist '("\\.aurora\\'" . python-mode))
-;; Add python mode to pants BUILD files
-(add-to-list 'auto-mode-alist '("BUILD\\'" . python-mode))
 
 ;; Add markdown mode to .md files
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
@@ -384,17 +367,6 @@ your recently and most frequently used commands.")
 ;; Add tuareg mode to .ml .mli files
 (add-to-list 'auto-mode-alist '("\\.ml\\'" . tuareg-mode))
 (add-to-list 'auto-mode-alist '("\\.mli\\'" . tuareg-mode))
-
-;; 
-(require 'calendar)
-(defun insdate-insert-current-date (&optional omit-day-of-week-p)
-  "Insert today's date using the current locale.
-  With a prefix argument, the date is inserted without the day of
-  the week."
-  (interactive "P*")
-  (insert (calendar-date-string (calendar-current-date) nil
-                                omit-day-of-week-p)))
-(global-set-key (kbd  "C-x M-d") 'insdate-insert-current-date)
 
 ;; Set tuareg mode (ml/ocaml) default indent
 (setq tuareg-default-indent 2)
@@ -417,6 +389,19 @@ your recently and most frequently used commands.")
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
+;; Compile command
+(global-set-key (kbd "M-c") (lambda () (interactive)
+                              (compile compile-command)))
+
+;; Disable bell
+(setq ring-bell-function 'ignore)
+
+;; rust-mode hooks
+(defun rust-mode-hooks ()
+  (set (make-local-variable 'compile-command)
+       "cargo build"))
+
+(add-hook 'rust-mode-hook 'rust-mode-hooks)
 
 ;; c++-mode hooks
 (defun c++-mode-hooks ()
@@ -480,6 +465,15 @@ override\\|final\\)\\>" . font-lock-keyword-face)
 )
 (c-add-style "fb-c-style" fb-c-style)
 
+;; Add /usr/loca/bin to exec-path
+(setq exec-path (append exec-path '("/usr/local/bin")))
+
+;; Add clang-format support
+(load "/usr/local/Cellar/clang-format/2019-05-14/share/clang/clang-format.el")
+(global-set-key [C-M-tab] 'clang-format-region)
+(global-set-key (kbd "C-x M-t") 'clang-format-buffer)
+(global-set-key (kbd "C-M-w") 'clang-format-buffer)
+
 ;; (add-hook 'c-mode-common-hook
 ;;           (lambda ()
 ;;             (c-set-style "fb-c-style")
@@ -492,12 +486,4 @@ override\\|final\\)\\>" . font-lock-keyword-face)
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
-(require 'clang-format)
-;; Add /usr/local/bin to exec-path to find clang-format and other brew
-;; installed binaries
-(setq exec-path (append exec-path '("/usr/local/bin")))
-(global-set-key (kbd "<C-M-tab>") 'clang-format-region)
-(global-set-key (kbd "C-x M-t") 'clang-format-buffer)
 
