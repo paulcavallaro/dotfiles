@@ -9,33 +9,6 @@
 (add-to-list 'load-path "~/.emacs.d/unmanaged")
 (add-to-list 'load-path "~/.emacs.d/unmanaged/highlight-80+.el")
 
-;; Tramp handle 2fac auth
-(setq
- tramp-password-prompt-regexp
- (concat
-  "^.*"
-  (regexp-opt
-   '("passcode" "Passcode"
-     "password" "Password") t)
-  ".*:\0? *"))
-
-;; Tramp use sshx
-(setq tramp-default-method "sshx")
-
-;; Tramp over mosh for OMGWTFBBQ goodness
-;; -- Doesn't work, cause mosh is a remote terminal emulator
-;; -- more than it's a ssh replacement. Maybe some day.
-;; (add-to-list
-;;  'tramp-methods
-;;  '("mosh"
-;;    (tramp-remote-shell "/bin/sh")
-;;    (tramp-remote-shell-args ("-c"))
-;;    (tramp-login-program "/usr/local/bin/mosh")
-;;    (tramp-login-args (("%u@%h")))
-;;    (tramp-async-args (()))
-;;    (tramp-gw-args ())
-;;    (tramp-default-port 22)))
-
 ;; Take that emacs version control integration!
 (setq vc-handled-backends nil)
 
@@ -68,10 +41,6 @@
 
 ;; protobuf-mode
 (require 'protobuf-mode)
-
-;; super awesome project git grep from emacs
-(require 'ack)
-(global-set-key (kbd "M-F") 'ack)
 
 (global-set-key (kbd "C-M-q") 'clang-format-region)
 
@@ -145,11 +114,6 @@
 (global-set-key (kbd "C-x M-w") (lambda () (interactive)
                                   (whitespace-cleanup)))
 
-;; Scala 2 Mode
-;; https://github.com/hvesalai/scala-mode2
-;; (add-to-list 'load-path "~/.emacs.d/scala-mode2/")
-;; (require 'scala-mode)
-
 ;; C indentation level to 2
 (setq-default c-basic-offset 2)
 
@@ -164,24 +128,7 @@
                                 omit-day-of-week-p)))
 (global-set-key "\C-x\M-d" `insdate-insert-current-date)
 
-
 (require 'cc-mode)
-
-(add-to-list 'c-default-style '(php-mode . "fb"))
-
-(c-add-style "fb" '("k&r"
-                    (c-basic-offset . 2)
-                    (c-hanging-braces-alist
-                     (defun-open after)
-                     (substatement-open after))
-                    (c-offsets-alist
-                     (arglist-close . 0)
-                     (arglist-intro . +))))
-
-(add-hook 'php-mode-hook
-          (function (lambda ()
-                      (c-set-style "fb")
-                      (setq indent-tabs-mode nil))))
 
 (defun save-to-clipboard (start end)
   "Save region to clipboard through pbcopy"
@@ -210,12 +157,6 @@
           (lambda ()
             (set (make-local-variable 'sgml-basic-offset) 2)))
 
-;; Adding geiser mode
-;; (load-file "~/lisp/geiser-0.2.1/elisp/geiser.el")
-;; Adding quack mode after geiser
-;; (load-file "~/lisp/quack-0.45/quack.el")
-;; (require 'quack)
-
 ;; ido-mode everywhere
 (setq ido-enable-flex-matching t)
 (setq ido-everywhere t)
@@ -223,9 +164,7 @@
 (setq ido-create-new-buffer 'prompt)
 
 ;; smex (ido-mode for M-x)
-(autoload 'smex "smex"
-  "Smex is a M-x enhancement for Emacs, it provides a convenient interface to
-your recently and most frequently used commands.")
+(require 'smex)
 (global-set-key (kbd "M-x") 'smex)
 
 ;; Pretty Lambda for Python
@@ -242,13 +181,6 @@ your recently and most frequently used commands.")
   '(progn
      (set-face-foreground 'magit-diff-add "green4")
      (set-face-foreground 'magit-diff-del "red3")))
-
-;; Find-File-In-Project Settings
-(require 'find-file-in-project)
-(setq ffip-limit 2048)
-(setq ffip-project-file ".git")
-(setq ffip-patterns (append '("*.hamlpy" "*.sass" "*.coffee" "*.hs" "*.lhs" "*.hsc" "*.ocaml" "*.rkt" "*.scm" "*.proto" "*.java" "*.c" "*.h") ffip-patterns))
-(global-set-key (kbd "C-c C-f") 'ffip)
 
 ;; Paredit Mode Keybindings
 (require 'paredit)
@@ -287,11 +219,6 @@ your recently and most frequently used commands.")
   (add-to-list 'flymake-allowed-file-name-masks
                '("\\.py\\'" flymake-pylint-init)))
 
-;; (add-hook 'python-mode-hook (lambda () (flymake-mode t)))
-
-;; Flymake-Cursor
-;; (require 'flymake-cursor)
-
 ;; Mac OS X
 (setq mac-command-modifier 'meta)
 (setq mac-option-modifier 'super)
@@ -310,11 +237,11 @@ your recently and most frequently used commands.")
 (setq-default fill-column 80)
 
 ;; Prog-Mode hooks
-(require 'highlight-80+)
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (fic-ext-mode t)
-            (highlight-80+-mode)))
+(require 'whitespace)
+(setq whitespace-line-column 80) ;; limit line length
+(setq whitespace-style '(face lines-tail))
+
+(add-hook 'prog-mode-hook 'whitespace-mode)
 
 ;; Turn off fringe mode because it doesn't work nicely in OS X
 ;; and also hide scroll bar
@@ -410,80 +337,20 @@ your recently and most frequently used commands.")
    '(("\\<\\(alignof\\|alignas\\|constexpr\\|decltype\\|\
 noexcept\\|nullptr\\|static_assert\\|thread_local\\|\
 override\\|final\\)\\>" . font-lock-keyword-face)
-     ("\\<\\(char[0-9]+_t\\)\\>" . font-lock-type-face)))
-  (set (make-local-variable 'compile-command)
-       "fbmake --fast dbg -j60")
-  (highlight-80+-mode))
+     ("\\<\\(char[0-9]+_t\\)\\>" . font-lock-type-face))))
 
 (add-hook 'c++-mode-hook 'c++-mode-hooks)
 
 ;; Don't open new files in a new frame/window
 (setq ns-pop-up-frames 'nil)
 
-;; FB C stuff from master.emacs
-;;=========================================================
-;;C, C++, Objective-C Indentation Style
-;;========================================================
-(require 'fb-objc)
-
-(defconst fb-c-style
-  '((c-basic-offset . 2)
-    (c-cleanup-list . (scope-operator
-                       brace-else-brace brace-elseif-brace brace-catch-brace
-                       defun-close-semi list-close-comma))
-    (c-hanging-braces-alist . (
-                               (arglist-cont-nonempty after)
-                               (brace-entry-open after)
-                               (class-open after)
-                               (defun-open after)
-                               (extern-lang-open after)
-                               (inexpr-class-open after)
-                               (inline-open after)
-                               (statement-cont after)
-                               (substatement-open after)
-                               (brace-list-open after)
-                               (namespace-close)
-                               (namespace-open)
-                               (block-close . c-snug-do-while)
-                               ))
-    (c-offsets-alist . (
-                        ;; indent for public: protected: private:
-                        ;; c-basic-offset + access-label == 1 char indent
-                        (access-label . -1)
-                        (arglist-intro . +)
-                        (case-label . +)
-                        (arglist-close . c-lineup-close-paren)
-                        (innamespace . 0)
-                        (member-init-intro . ++)
-                        (inher-intro . ++)
-                        (objc-method-args-cont . fb-c-lineup-ObjC-method-args)
-                        (objc-method-call-cont
-                         (fb-c-lineup-ObjC-method-call-colons
-                          fb-c-lineup-ObjC-method-call +))
-                        )))
-  "Facebook's C, C++, and Objective-C programming style"
-)
-(c-add-style "fb-c-style" fb-c-style)
-
 ;; Add /usr/loca/bin to exec-path
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
 ;; Add clang-format support
-(load "/usr/local/Cellar/clang-format/2019-05-14/share/clang/clang-format.el")
+(load "/usr/local/Cellar/clang-format/10.0.1/share/clang/clang-format.el")
 (global-set-key [C-M-tab] 'clang-format-region)
 (global-set-key (kbd "C-x M-t") 'clang-format-buffer)
 (global-set-key (kbd "C-M-w") 'clang-format-buffer)
 
-;; (add-hook 'c-mode-common-hook
-;;           (lambda ()
-;;             (c-set-style "fb-c-style")
-;;             (highlight-80+-mode t)
-;;             ))
 (put 'narrow-to-region 'disabled nil)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
